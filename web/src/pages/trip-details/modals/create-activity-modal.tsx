@@ -12,7 +12,7 @@ export function CreateActivityModal({ closeCreateActivyModalOpen, }: CreateActiv
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="font-lg font-semibold">Cadastrar atividade</h2>
-            <Button variant="undefined" type="button" onClick={closeCreateActivyModalOpen}>
+            <Button variant="blank" type="button" onClick={closeCreateActivyModalOpen}>
               <X className="size-5 text-zinc-400" />
             </Button>
           </div>

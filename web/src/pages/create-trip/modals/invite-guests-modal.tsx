@@ -22,7 +22,7 @@ export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, remov
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="font-lg font-semibold">Selecionar convidados</h2>
-            <Button variant="undefined" type="button" onClick={closeGuestsModal}>
+            <Button variant="blank" type="button" onClick={closeGuestsModal}>
               <X className="size-5 text-zinc-400" />
             </Button>
           </div>
@@ -37,7 +37,7 @@ export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, remov
             return (
               <div key={emailObject.email} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
                 <span className="text-zinc-300">{emailObject.email}</span>
-                <Button variant="undefined" type="button">
+                <Button variant="blank" type="button">
                   <X onClick={() => removeEmailFromInvites(emailObject.email)} className="size-4 text-zinc-400" />
                 </Button>
               </div>

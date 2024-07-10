@@ -14,7 +14,7 @@ export function ConfirmTripModal({ closeConfirmTripModalOpen, createTrip }: Conf
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="font-lg font-semibold">Confirmar criação de viagem</h2>
-            <Button variant="undefined" type="button" onClick={closeConfirmTripModalOpen}>
+            <Button variant="blank" type="button" onClick={closeConfirmTripModalOpen}>
               <X className="size-5 text-zinc-400" />
             </Button>
           </div>
