@@ -1,56 +1,78 @@
+import { useState, useEffect, FormEvent } from 'react';
 import { ArrowRight, AtSign, Calendar, MapPin, Plus, Settings2, UserRoundPlus, X } from "lucide-react";
-import { FormEvent, useState } from "react";
+
+interface Suggestion {
+  formatted: string;
+}
 
 export function App() {
-  const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false)
-  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false)
-  const [emailsToInvite, setEmailsToInvite] = useState([
-    'diego@rocketseat.com.br',
-    'john@acme.com'
-  ])
+  const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
+  const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
+  const [emailsToInvite, setEmailsToInvite] = useState(['diego@rocketseat.com.br', 'john@acme.com']);
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+
+  const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
+
+  useEffect(() => {
+    if (query.length > 2) {
+      fetch(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`)
+        .then(response => response.json())
+        .then(data => {
+          setSuggestions(data.results.slice(0, 3));
+        });
+    } else {
+      setSuggestions([]);
+    }
+  }, [query, apiKey]);
 
   function openGuestsInput() {
-    setIsGuestsInputOpen(true)
+    setIsGuestsInputOpen(true);
   }
 
   function closeGuestsInput() {
-    setIsGuestsInputOpen(false)
+    setIsGuestsInputOpen(false);
   }
 
   function openGuestsModal() {
-    setIsGuestsModalOpen(true)
+    setIsGuestsModalOpen(true);
   }
 
   function closeGuestsModal() {
-    setIsGuestsModalOpen(false)
+    setIsGuestsModalOpen(false);
   }
 
   function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const data = new FormData(event.currentTarget)
-    const email = data.get('email')?.toString()
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email')?.toString();
 
     if (!email) {
-      return
+      return;
     }
 
     if (emailsToInvite.includes(email)) {
-      return
+      return;
     }
 
     setEmailsToInvite([
       ...emailsToInvite,
       email
-    ])
+    ]);
 
-    event.currentTarget.reset()
+    event.currentTarget.reset();
   }
 
   function removeEmailFromInvites(emailToRemove: string) {
-    const newEmailList = emailsToInvite.filter(email => email !== emailToRemove)
+    const newEmailList = emailsToInvite.filter(email => email !== emailToRemove);
 
-    setEmailsToInvite(newEmailList)
+    setEmailsToInvite(newEmailList);
+  }
+
+  function handleSelectSuggestion(suggestion: Suggestion) {
+    setQuery(suggestion.formatted);
+    setSuggestions([]);
   }
 
   return (
@@ -65,14 +87,29 @@ export function App() {
 
         <div className="space-y-4">
           <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
-            <div className="flex items-center gap-2 flex-1">
+            <div className="flex items-center gap-2 flex-1 relative">
               <MapPin className="size-5 text-zinc-400" />
               <input
                 disabled={isGuestsInputOpen}
                 type="text"
                 placeholder="Para onde você vai?"
-                className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+                className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1 truncate"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
+              {suggestions.length > 0 && (
+                <ul className="absolute top-full mt-2 left-0 w-full bg-zinc-900 border border-zinc-200 rounded-md z-10">
+                  {suggestions.map((suggestion, index) => (
+                    <li
+                      key={index}
+                      className="text-left text-sm text-zinc-200 px-4 py-2 hover:bg-zinc-200 hover:text-zinc-900 cursor-pointer"
+                      onClick={() => handleSelectSuggestion(suggestion)}
+                    >
+                      {suggestion.formatted}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
@@ -102,18 +139,18 @@ export function App() {
 
           {isGuestsInputOpen && (
             <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
-            <button type="button" onClick={openGuestsModal} className="flex items-center gap-2 flex-1 text-left">
-              <UserRoundPlus className="size-5 text-zinc-400" />
-              <span className="text-zinc-400 text-lg flex-1">Quem estará na viagem?</span>
-            </button>
+              <button type="button" onClick={openGuestsModal} className="flex items-center gap-2 flex-1 text-left">
+                <UserRoundPlus className="size-5 text-zinc-400" />
+                <span className="text-zinc-400 text-lg flex-1">Quem estará na viagem?</span>
+              </button>
 
-            <div className="w-px h-6 bg-zinc-800" />
+              <div className="w-px h-6 bg-zinc-800" />
 
-            <button className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400">
-              Confirmar viagem
-              <ArrowRight className="size-5" />
-            </button>
-          </div>
+              <button className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400">
+                Confirmar viagem
+                <ArrowRight className="size-5" />
+              </button>
+            </div>
           )}
         </div>
 
@@ -124,13 +161,13 @@ export function App() {
       </div>
 
       {isGuestsModalOpen && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-          <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
+          <div className="w-full max-w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h2 className="font-lg font-semibold">Selecionar convidados</h2>
-                <button>
-                  <X className="size-5 text-zinc-400" onClick={closeGuestsModal} />
+                <button onClick={closeGuestsModal}>
+                  <X className="size-5 text-zinc-400" />
                 </button>
               </div>
 
@@ -138,7 +175,7 @@ export function App() {
                 Os convidados irão receber e-mails para confirmar a participação na viagem.
               </p>
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               {emailsToInvite.map(email => {
                 return (
@@ -152,7 +189,7 @@ export function App() {
                 }
               )}
             </div>
-            
+
             <div className="w-full h-px bg-zinc-800" />
 
             <form onSubmit={addNewEmailToInvite} className="p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
@@ -165,7 +202,7 @@ export function App() {
                   className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
                 />
               </div>
-
+                  
               <button type="submit" className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400">
                 Convidar
                 <Plus className="size-5" />
@@ -177,3 +214,4 @@ export function App() {
     </div>
   );
 }
+
