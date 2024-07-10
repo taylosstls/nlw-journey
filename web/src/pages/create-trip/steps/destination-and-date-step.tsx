@@ -2,12 +2,12 @@ import { ArrowRight, Calendar, MapPin, Settings2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
 interface DestinationAndDateStepProps {
-  isGuestsInputOpen: boolean;
   closeGuestsInput: () => void;
-  suggestions: Suggestion[];
   handleSelectSuggestion: (string: Suggestion) => void;
   openGuestsInput: () => void;
   setQuery: Dispatch<SetStateAction<string>>;
+  isGuestsInputOpen: boolean;
+  suggestions: Suggestion[];
   query: string;
 }
 
@@ -15,7 +15,7 @@ interface Suggestion {
   formatted: string;
 }
 
-export function DestinationAndDateStep({ closeGuestsInput, isGuestsInputOpen, handleSelectSuggestion, suggestions, openGuestsInput, setQuery, query }: DestinationAndDateStepProps) {
+export function DestinationAndDateStep({ closeGuestsInput, handleSelectSuggestion, openGuestsInput, setQuery, isGuestsInputOpen, suggestions, query }: DestinationAndDateStepProps) {
   return (
     <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
       <div className="flex items-center gap-2 flex-1 relative">

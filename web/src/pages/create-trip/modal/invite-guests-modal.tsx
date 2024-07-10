@@ -3,9 +3,9 @@ import { FormEvent } from "react";
 
 interface InviteGuestsModalProps {
   closeGuestsModal: () => void;
-  emailsToInvite: EmailsInvite[];
   addNewEmailToInvite: (event: FormEvent<HTMLFormElement>) => void;
   removeEmailFromInvites: (emailToRemove: string) => void;
+  emailsToInvite: EmailsInvite[];
   validationMessage: string | null;
 }
 
@@ -13,7 +13,7 @@ interface EmailsInvite {
   email: string
 }
 
-export function InviteGuestsModal({ addNewEmailToInvite, closeGuestsModal, emailsToInvite, removeEmailFromInvites, validationMessage }: InviteGuestsModalProps) {
+export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, removeEmailFromInvites, emailsToInvite, validationMessage }: InviteGuestsModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
