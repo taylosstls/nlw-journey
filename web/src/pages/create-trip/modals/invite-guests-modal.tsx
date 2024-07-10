@@ -1,5 +1,6 @@
 import { AtSign, Plus, X } from "lucide-react"
 import { FormEvent } from "react";
+import { Button } from "../../../components/Button";
 
 interface InviteGuestsModalProps {
   closeGuestsModal: () => void;
@@ -21,9 +22,9 @@ export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, remov
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="font-lg font-semibold">Selecionar convidados</h2>
-            <button onClick={closeGuestsModal}>
+            <Button variant="undefined" type="button" onClick={closeGuestsModal}>
               <X className="size-5 text-zinc-400" />
-            </button>
+            </Button>
           </div>
 
           <p className="text-sm text-zinc-400">
@@ -36,9 +37,9 @@ export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, remov
             return (
               <div key={emailObject.email} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
                 <span className="text-zinc-300">{emailObject.email}</span>
-                <button type="button">
+                <Button variant="undefined" type="button">
                   <X onClick={() => removeEmailFromInvites(emailObject.email)} className="size-4 text-zinc-400" />
-                </button>
+                </Button>
               </div>
             )
           }
@@ -58,10 +59,10 @@ export function InviteGuestsModal({ closeGuestsModal, addNewEmailToInvite, remov
             />
           </div>
 
-          <button type="submit" className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400 transition-colors duration-300">
+          <Button type="submit">
             Convidar
             <Plus className="size-5" />
-          </button>
+          </Button>
         </form>
 
         {validationMessage && (

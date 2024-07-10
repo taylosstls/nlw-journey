@@ -1,10 +1,11 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { InviteGuestsModal } from './modal/invite-guests-modal';
-import { ConfirmTripModal } from './modal/confirm-trip-modal';
-import { DestinationAndDateStep } from "./steps/destination-and-date-step";
-import { InviteGuestsStep } from "./steps/invite-guests-step";
+import { DestinationAndDateStep } from "./components/destination-and-date-step";
+import { InviteGuestsStep } from "./components/invite-guests-step";
+
+import { InviteGuestsModal } from './modals/invite-guests-modal';
+import { ConfirmTripModal } from './modals/confirm-trip-modal';
 
 interface Suggestion {
   formatted: string;
@@ -22,7 +23,6 @@ export function CreateTripPage() {
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
-
   const [emailsToInvite, setEmailsToInvite] = useState<EmailsInvite[]>([]);
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -30,15 +30,23 @@ export function CreateTripPage() {
   const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     if (query.length > 2) {
-      fetch(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`)
-        .then(response => response.json())
-        .then(data => {
-          setSuggestions(data.results.slice(0, 3));
-        });
+      timeoutId = setTimeout(() => {
+        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`)
+          .then(response => response.json())
+          .then(data => {
+            setSuggestions(data.results.slice(0, 3));
+          });
+      }, 1000);
     } else {
       setSuggestions([]);
     }
+
+    return () => {
+      clearTimeout(timeoutId); // Limpando o timeout para evitar execução indesejada
+    };
   }, [query, apiKey]);
 
   function openGuestsInput() {
