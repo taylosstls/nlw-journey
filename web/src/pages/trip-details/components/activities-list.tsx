@@ -1,16 +1,17 @@
-import { CircleCheck, CircleDashed } from "lucide-react";
+import { CircleCheck, CircleDashed } from 'lucide-react';
 
 export function ActivitiesList() {
   return (
     <div className="space-y-8">
-
       <div className="space-y-2.5">
         <div className="flex gap-2 items-baseline">
           <span className="text-xl text-zinc-300 font-semibold">Dia 17</span>
           <span className="text-xs text-zinc-500">sábado</span>
         </div>
 
-        <p className="text-zinc-500 text-sm">Nenhuma atividade cadastrada nessa data.</p>
+        <p className="text-zinc-500 text-sm">
+          Nenhuma atividade cadastrada nessa data.
+        </p>
       </div>
 
       <div className="space-y-2.5">
@@ -35,7 +36,6 @@ export function ActivitiesList() {
           </div>
         </div>
       </div>
-
     </div>
-  )
+  );
 }

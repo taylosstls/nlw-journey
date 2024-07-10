@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from 'react';
+import { Plus } from 'lucide-react';
 
-import { ImportantLinks } from "./components/important-links";
-import { GuestsConfirmList } from "./components/guests-confirm-list";
-import { ActivitiesList } from "./components/activities-list";
-import { HeaderDestinationAndDate } from "./components/header-destination-and-date";
+import { ImportantLinks } from './components/important-links';
+import { GuestsConfirmList } from './components/guests-confirm-list';
+import { ActivitiesList } from './components/activities-list';
+import { HeaderDestinationAndDate } from './components/header-destination-and-date';
 
-import { CreateActivityModal } from "./modals/create-activity-modal";
-import { Button } from "../../components/Button";
+import { CreateActivityModal } from './modals/create-activity-modal';
+import { Button } from '../../components/Button';
 
 export function TripDetailsPage() {
   const [isCreateActivyModalOpen, setIsCreateActivyModalOpen] = useState(false);
 
   function openCreateActivyModalOpen() {
-    setIsCreateActivyModalOpen(true)
+    setIsCreateActivyModalOpen(true);
   }
 
   function closeCreateActivyModalOpen() {
-    setIsCreateActivyModalOpen(false)
+    setIsCreateActivyModalOpen(false);
   }
 
   return (
@@ -52,7 +52,6 @@ export function TripDetailsPage() {
           closeCreateActivyModalOpen={closeCreateActivyModalOpen}
         />
       )}
-
     </div>
-  )
+  );
 }

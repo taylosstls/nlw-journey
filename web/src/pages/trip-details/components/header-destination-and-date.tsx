@@ -1,6 +1,6 @@
-import { Calendar, MapPin, Settings2 } from "lucide-react";
+import { Calendar, MapPin, Settings2 } from 'lucide-react';
 
-import { Button } from "../../../components/Button";
+import { Button } from '../../../components/Button';
 
 export function HeaderDestinationAndDate() {
   return (
@@ -23,7 +23,6 @@ export function HeaderDestinationAndDate() {
           <Settings2 className="size-5" />
         </Button>
       </div>
-
     </div>
-  )
+  );
 }

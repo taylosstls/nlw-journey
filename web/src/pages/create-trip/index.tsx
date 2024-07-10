@@ -1,8 +1,8 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { DestinationAndDateStep } from "./components/destination-and-date-step";
-import { InviteGuestsStep } from "./components/invite-guests-step";
+import { DestinationAndDateStep } from './components/destination-and-date-step';
+import { InviteGuestsStep } from './components/invite-guests-step';
 
 import { InviteGuestsModal } from './modals/invite-guests-modal';
 import { ConfirmTripModal } from './modals/confirm-trip-modal';
@@ -12,7 +12,7 @@ interface Suggestion {
 }
 
 interface EmailsInvite {
-  email: string
+  email: string;
 }
 
 export function CreateTripPage() {
@@ -21,7 +21,9 @@ export function CreateTripPage() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
-  const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null,
+  );
 
   const [emailsToInvite, setEmailsToInvite] = useState<EmailsInvite[]>([]);
   const [query, setQuery] = useState('');
@@ -34,9 +36,11 @@ export function CreateTripPage() {
 
     if (query.length > 2) {
       timeoutId = setTimeout(() => {
-        fetch(`https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`)
-          .then(response => response.json())
-          .then(data => {
+        fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`,
+        )
+          .then((response) => response.json())
+          .then((data) => {
             setSuggestions(data.results.slice(0, 3));
           });
       }, 1000);
@@ -86,7 +90,9 @@ export function CreateTripPage() {
     }
 
     // Dividir a string de e-mails usando os separadores "," e ";"
-    const emailsArray = emailsString.split(/[,;]+/).map(email => email.trim());
+    const emailsArray = emailsString
+      .split(/[,;]+/)
+      .map((email) => email.trim());
 
     // Expressão regular para validar e-mails
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -96,11 +102,11 @@ export function CreateTripPage() {
     const invalidEmails: string[] = [];
     const duplicateEmails: string[] = [];
 
-    emailsArray.forEach(email => {
+    emailsArray.forEach((email) => {
       if (email) {
         if (!emailRegex.test(email)) {
           invalidEmails.push(email);
-        } else if (emailsToInvite.some(e => e.email === email)) {
+        } else if (emailsToInvite.some((e) => e.email === email)) {
           duplicateEmails.push(email);
         } else {
           newEmailsToAdd.push({ email });
@@ -116,13 +122,13 @@ export function CreateTripPage() {
       setValidationMessage(
         invalidEmails.length === 1
           ? `E-mail ${duplicateEmails.join(', ')} inválido.`
-          : `Os seguintes e-mails são inválidos: ${duplicateEmails.join(', ')}}`
+          : `Os seguintes e-mails são inválidos: ${duplicateEmails.join(', ')}}`,
       );
     } else if (duplicateEmails.length > 0) {
       setValidationMessage(
         duplicateEmails.length === 1
           ? `E-mail ${duplicateEmails.join(', ')} já está na lista.`
-          : `Os seguintes e-mails já estão na lista: ${duplicateEmails.join(', ')}`
+          : `Os seguintes e-mails já estão na lista: ${duplicateEmails.join(', ')}`,
       );
     } else {
       setValidationMessage(null);
@@ -132,7 +138,9 @@ export function CreateTripPage() {
   }
 
   function removeEmailFromInvites(emailToRemove: string) {
-    const newEmailList = emailsToInvite.filter(e => e.email !== emailToRemove);
+    const newEmailList = emailsToInvite.filter(
+      (e) => e.email !== emailToRemove,
+    );
 
     setEmailsToInvite(newEmailList);
   }
@@ -179,8 +187,17 @@ export function CreateTripPage() {
         </div>
 
         <p className="text-sm text-zinc-500">
-          Ao planejar sua viagem pela plann.er você automaticamente concorda <br />
-          com nossos <a className="text-zinc-300 underline" href="#">termos de uso</a> e <a className="text-zinc-300 underline" href="#">políticas de privacidade</a>.
+          Ao planejar sua viagem pela plann.er você automaticamente concorda{' '}
+          <br />
+          com nossos{' '}
+          <a className="text-zinc-300 underline" href="#">
+            termos de uso
+          </a>{' '}
+          e{' '}
+          <a className="text-zinc-300 underline" href="#">
+            políticas de privacidade
+          </a>
+          .
         </p>
       </div>
 
@@ -200,8 +217,6 @@ export function CreateTripPage() {
           createTrip={createTrip}
         />
       )}
-
     </div>
   );
 }
-

@@ -1,5 +1,5 @@
-import { CircleCheck, CircleDashed, UserCog } from "lucide-react";
-import { Button } from "../../../components/Button";
+import { CircleCheck, CircleDashed, UserCog } from 'lucide-react';
+import { Button } from '../../../components/Button';
 
 export function GuestsConfirmList() {
   return (
@@ -9,19 +9,26 @@ export function GuestsConfirmList() {
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-4">
           <div className="space-y-1.5 flex-1">
-            <span className="block font-medium text-zinc-100">Jessica White</span>
-            <span className="block text-sm text-zinc-400 truncate">jessica.white44@yahoo.com</span>
+            <span className="block font-medium text-zinc-100">
+              Jessica White
+            </span>
+            <span className="block text-sm text-zinc-400 truncate">
+              jessica.white44@yahoo.com
+            </span>
           </div>
           <CircleDashed className="size-5 text-zinc-400" />
         </div>
 
         <div className="flex items-center justify-between gap-4">
           <div className="space-y-1.5 flex-1">
-            <span className="block font-medium text-zinc-100">Dr. Rita Pacocha</span>
-            <span className="block text-sm text-zinc-400 truncate">lacy.stiedemann@gmail.com</span>
+            <span className="block font-medium text-zinc-100">
+              Dr. Rita Pacocha
+            </span>
+            <span className="block text-sm text-zinc-400 truncate">
+              lacy.stiedemann@gmail.com
+            </span>
           </div>
           <CircleCheck className="size-5 text-lime-300" />
-
         </div>
       </div>
 
@@ -30,5 +37,5 @@ export function GuestsConfirmList() {
         Gerenciar convidados
       </Button>
     </div>
-  )
+  );
 }

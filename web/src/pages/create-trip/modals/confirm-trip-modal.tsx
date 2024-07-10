@@ -1,26 +1,41 @@
-import { Mail, User, X } from "lucide-react";
-import { FormEvent } from "react";
-import { Button } from "../../../components/Button";
+import { Mail, User, X } from 'lucide-react';
+import { FormEvent } from 'react';
+import { Button } from '../../../components/Button';
 
 interface ConfirmTripModal {
   closeConfirmTripModalOpen: () => void;
   createTrip: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-export function ConfirmTripModal({ closeConfirmTripModalOpen, createTrip }: ConfirmTripModal) {
+export function ConfirmTripModal({
+  closeConfirmTripModalOpen,
+  createTrip,
+}: ConfirmTripModal) {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
       <div className="w-full max-w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h2 className="font-lg font-semibold">Confirmar criação de viagem</h2>
-            <Button variant="blank" type="button" onClick={closeConfirmTripModalOpen}>
+            <h2 className="font-lg font-semibold">
+              Confirmar criação de viagem
+            </h2>
+            <Button
+              variant="blank"
+              type="button"
+              onClick={closeConfirmTripModalOpen}
+            >
               <X className="size-5 text-zinc-400" />
             </Button>
           </div>
 
           <p className="text-sm text-zinc-400">
-            Para concluir a criação da viagem para <span className='font-semibold text0'>Florianópolis, Brasil</span> nas datas de <span className='font-semibold text-zinc-100'>16 a 27 de Agosto de 2024</span> preencha seus dados abaixo.
+            Para concluir a criação da viagem para{' '}
+            <span className="font-semibold text0">Florianópolis, Brasil</span>{' '}
+            nas datas de{' '}
+            <span className="font-semibold text-zinc-100">
+              16 a 27 de Agosto de 2024
+            </span>{' '}
+            preencha seus dados abaixo.
           </p>
         </div>
 
@@ -51,5 +66,5 @@ export function ConfirmTripModal({ closeConfirmTripModalOpen, createTrip }: Conf
         </form>
       </div>
     </div>
-  )
+  );
 }

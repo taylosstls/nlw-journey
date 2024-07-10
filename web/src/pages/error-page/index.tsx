@@ -1,5 +1,5 @@
-import { ArrowLeft } from "lucide-react";
-import { Link, useRouteError } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import { Link, useRouteError } from 'react-router-dom';
 
 interface RouteError {
   statusText?: string;
@@ -13,9 +13,12 @@ export default function ErrorPage() {
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-pattern">
       <div className="max-w-lg mx-auto text-center p-8">
-        <h1 className="text-4xl font-bold text-zinc-200 mb-4">Oops! Página não encontrada</h1>
+        <h1 className="text-4xl font-bold text-zinc-200 mb-4">
+          Oops! Página não encontrada
+        </h1>
         <p className="text-lg text-zinc-400 mb-8">
-          A página que você está procurando pode ter sido removida, renomeada ou está temporariamente indisponível.
+          A página que você está procurando pode ter sido removida, renomeada ou
+          está temporariamente indisponível.
         </p>
         <Link
           to="/"

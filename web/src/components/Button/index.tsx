@@ -1,12 +1,14 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps, ReactNode } from 'react';
 import { tv, VariantProps } from 'tailwind-variants';
 
-interface ButtonProps extends ComponentProps<'button'>,
-  VariantProps<typeof buttonVariants> {
+interface ButtonProps
+  extends ComponentProps<'button'>,
+    VariantProps<typeof buttonVariants> {
   children: ReactNode;
 }
 
-const buttonFormat = 'rounded-lg px-5 justify-center font-medium flex items-center gap-2 transition-colors duration-300'
+const buttonFormat =
+  'rounded-lg px-5 justify-center font-medium flex items-center gap-2 transition-colors duration-300';
 
 const buttonVariants = tv({
   variants: {
@@ -21,19 +23,19 @@ const buttonVariants = tv({
       default: 'py-2',
       full: 'w-full h-11',
       blank: '',
-    }
+    },
   },
 
   defaultVariants: {
     variant: 'primary',
     size: 'default',
-  }
-})
+  },
+});
 
 export function Button({ children, variant, size, ...props }: ButtonProps) {
   return (
     <button className={buttonVariants({ variant, size })} {...props}>
       {children}
     </button>
-  )
+  );
 }
