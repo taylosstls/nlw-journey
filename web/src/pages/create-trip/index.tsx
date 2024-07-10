@@ -1,5 +1,7 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { ArrowRight, AtSign, Calendar, MapPin, Plus, Settings2, User, UserRoundPlus, X } from "lucide-react";
+import { ArrowRight, Calendar, MapPin, Settings2, User, UserRoundPlus, X } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import { InviteGuestsModal } from './invite-guests-modal';
 
 interface Suggestion {
   formatted: string;
@@ -10,6 +12,8 @@ interface EmailsInvite {
 }
 
 export function CreateTripPage() {
+  const navigate = useNavigate();
+
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
   const [isGuestsModalOpen, setIsGuestsModalOpen] = useState(false);
   const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false);
@@ -100,14 +104,14 @@ export function CreateTripPage() {
     if (invalidEmails.length > 0) {
       setValidationMessage(
         invalidEmails.length === 1
-          ? `E-mail ${duplicateEmails.join(', ')} é inválido.`
+          ? `E-mail ${duplicateEmails.join(', ')} inválido.`
           : `Os seguintes e-mails são inválidos: ${duplicateEmails.join(', ')}}`
       );
     } else if (duplicateEmails.length > 0) {
       setValidationMessage(
         duplicateEmails.length === 1
-          ? `E-mail ${duplicateEmails.join(', ')} já está adicionado.`
-          : `Os seguintes e-mails já foram adicionados: ${duplicateEmails.join(', ')}`
+          ? `E-mail ${duplicateEmails.join(', ')} já está na lista.`
+          : `Os seguintes e-mails já estão na lista: ${duplicateEmails.join(', ')}`
       );
     } else {
       setValidationMessage(null);
@@ -120,6 +124,12 @@ export function CreateTripPage() {
     const newEmailList = emailsToInvite.filter(e => e.email !== emailToRemove);
 
     setEmailsToInvite(newEmailList);
+  }
+
+  function createTrip(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    navigate('trips/123');
   }
 
   function handleSelectSuggestion(suggestion: Suggestion) {
@@ -218,61 +228,13 @@ export function CreateTripPage() {
       </div>
 
       {isGuestsModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
-          <div className="w-full max-w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h2 className="font-lg font-semibold">Selecionar convidados</h2>
-                <button onClick={closeGuestsModal}>
-                  <X className="size-5 text-zinc-400" />
-                </button>
-              </div>
-
-              <p className="text-sm text-zinc-400">
-                Os convidados irão receber e-mails para confirmar a participação na viagem.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {emailsToInvite.map(emailObject => {
-                return (
-                  <div key={emailObject.email} className="py-1.5 px-2.5 rounded-md bg-zinc-800 flex items-center gap-2">
-                    <span className="text-zinc-300">{emailObject.email}</span>
-                    <button type="button">
-                      <X onClick={() => removeEmailFromInvites(emailObject.email)} className="size-4 text-zinc-400" />
-                    </button>
-                  </div>
-                )
-              }
-              )}
-            </div>
-
-            <div className="w-full h-px bg-zinc-800" />
-
-            <form onSubmit={addNewEmailToInvite} className="p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
-              <div className="px-2 flex items-center flex-1 gap-2">
-                <AtSign className="text-zinc-400 size-5" />
-                <input
-                  type="text"
-                  name="email"
-                  placeholder="Digite o email do convidado"
-                  className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-                />
-              </div>
-
-              <button type="submit" className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400 transition-colors duration-300">
-                Convidar
-                <Plus className="size-5" />
-              </button>
-            </form>
-
-            {validationMessage && (
-              <div className="text-red-500 text-sm">
-                {validationMessage}
-              </div>
-            )}
-          </div>
-        </div>
+        <InviteGuestsModal
+          emailsToInvite={emailsToInvite}
+          removeEmailFromInvites={removeEmailFromInvites}
+          addNewEmailToInvite={addNewEmailToInvite}
+          closeGuestsModal={closeGuestsModal}
+          validationMessage={validationMessage}
+        />
       )}
 
       {isConfirmTripModalOpen && (
@@ -291,7 +253,7 @@ export function CreateTripPage() {
               </p>
             </div>
 
-            <form onSubmit={addNewEmailToInvite} className="space-y-3">
+            <form onSubmit={createTrip} className="space-y-3">
               <div className="h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2">
                 <User className="text-zinc-400 size-5" />
                 <input
