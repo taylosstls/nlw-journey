@@ -184,11 +184,13 @@ export function CreateTripPage() {
 
       setValidationMessage(null);
 
+      const emailsToInviteStrings = emailsToInvite.map((invite) => invite.email);
+
       const response = await api.post('/trips', {
         "destination": destination,
         "starts_at": eventStartAndEndDates?.from,
         "ends_at": eventStartAndEndDates?.to,
-        "emails_to_invite": emailsToInvite,
+        "emails_to_invite": emailsToInviteStrings,
         "owner_name": OwnerName,
         "owner_email": OwnerEmail
       })

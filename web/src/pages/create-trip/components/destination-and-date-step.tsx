@@ -64,6 +64,16 @@ export function DestinationAndDateStep({
     openGuestsInput();
   }
 
+  function getDisabledDays() {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    return [
+      { before: today },
+      today,
+    ];
+  }
+
   const displayedDate = formatDisplayedDate(eventStartAndEndDates);
 
   return (
@@ -77,6 +87,7 @@ export function DestinationAndDateStep({
             placeholder="Para onde você vai?"
             className="bg-transparent text-sm placeholder-zinc-400 outline-none flex-1 truncate"
             onChange={(e) => setDestination(e.target.value)}
+            value={destination}
           />
           {suggestions.length > 0 && (
             <ul className="absolute top-full mt-2 left-0 w-full bg-zinc-900 border border-zinc-200 rounded-md z-10">
@@ -122,6 +133,7 @@ export function DestinationAndDateStep({
               </div>
 
               <DayPicker
+                disabled={getDisabledDays()}
                 numberOfMonths={2}
                 showOutsideDays
                 mode="range"
