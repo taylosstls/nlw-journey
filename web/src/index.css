@@ -1,3 +1,5 @@
+@import url(./styles/dataPicker.css);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,21 +10,4 @@
 
 input {
   color-scheme: dark;
-}
-
-.rdp {
-  margin: 0;
-  --rdp-accent-color: #bef264 !important;
-  --rdp-accent-color-dark: #bef264 !important;
-}
-
-.rdp-day_selected,
-.rdp-day_selected:focus-visible,
-.rdp-day_selected:hover {
-  color: #1a2e05 !important;
-}
-
-.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
-  color: #1a2e05 !important;
-  background-color: #bef264 !important;
 }

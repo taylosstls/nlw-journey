@@ -12,7 +12,7 @@ export function formatDisplayedDate(
   return eventStartAndEndDates.to &&
     eventStartAndEndDates.to > eventStartAndEndDates.from
     ? format(eventStartAndEndDates.from, 'dd/MM', { locale: ptBR })
-        .concat(' até ')
-        .concat(format(eventStartAndEndDates.to, 'dd/MM', { locale: ptBR }))
+      .concat(' até ')
+      .concat(format(eventStartAndEndDates.to, 'dd/MM', { locale: ptBR }))
     : format(eventStartAndEndDates.from, "d' de 'LLLL", { locale: ptBR });
 }

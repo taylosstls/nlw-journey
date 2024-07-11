@@ -1,0 +1,83 @@
+.rdp {
+  margin: 0;
+  --rdp-accent-color: #bef264 !important;
+  --rdp-accent-color-dark: #bef264 !important;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  color: #1a2e05 !important;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected),
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active,
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  color: #1a2e05 !important;
+  background-color: #bef264 !important;
+}
+
+.react-datetime-picker__wrapper,
+.react-datetime-picker__calendar .react-calendar,
+.react-datetime-picker__clock {
+  border: 0 none;
+}
+
+.react-datetime-picker__calendar .react-calendar,
+.react-datetime-picker__clock {
+  padding: 1rem;
+  margin-top: .75rem;
+}
+
+.react-calendar,
+.react-calendar__tile:disabled,
+.react-calendar__navigation button:disabled,
+.react-datetime-picker__clock {
+  background-color: rgb(24 24 27)
+}
+
+.react-calendar__tile:disabled,
+.react-calendar__navigation button:disabled {
+  opacity: 0.25;
+}
+
+.react-calendar__navigation__label {
+  font-weight: 700;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  font-size: .75rem;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: inherit;
+}
+
+.react-datetime-picker__calendar-button {
+  display: none;
+}
+
+.react-datetime-picker__button svg {
+  stroke: rgb(161 161 170);
+}
+
+.react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon,
+.react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon {
+  stroke: #bef264;
+}
+
+abbr:where([title]) {
+  text-decoration: none !important;
+}
+
+.react-clock__face {
+  border-color: #bef264;
+}
+
+.react-clock__mark__body,
+.react-clock__hand__body {
+  background-color: #fff;
+}

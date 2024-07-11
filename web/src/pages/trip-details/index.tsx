@@ -6,13 +6,17 @@ import { ImportantLinks } from './components/important-links';
 import { GuestsConfirmList } from './components/guests-confirm-list';
 import { ActivitiesList } from './components/activities-list';
 import { HeaderDestinationAndDate } from './components/header-destination-and-date';
+import { Button } from '../../components/Button';
 
 import { CreateActivityModal } from './modals/create-activity-modal';
-import { Button } from '../../components/Button';
+
 import { api } from '../../lib/axios';
+
+import { Trip } from '../../types/trip';
 
 export function TripDetailsPage() {
   const [isCreateActivyModalOpen, setIsCreateActivyModalOpen] = useState(false);
+  const [trip, setTrip] = useState<Trip | undefined>()
 
   function openCreateActivyModalOpen() {
     setIsCreateActivyModalOpen(true);
@@ -29,8 +33,7 @@ export function TripDetailsPage() {
   useEffect(() => {
     api.get(`/trips/${tripId}`)
       .then(response => {
-        console.log(response.data);
-        // Lógica adicional com a resposta bem-sucedida, se necessário
+        setTrip(response.data.trip)
       })
       .catch(error => {
         console.log(error);
@@ -44,7 +47,7 @@ export function TripDetailsPage() {
 
   return (
     <div className="max-w-6xl w-full px-6 py-10 mx-auto space-y-8">
-      <HeaderDestinationAndDate />
+      <HeaderDestinationAndDate destinationInfo={trip} />
 
       <main className="w-full flex gap-16 px-4">
         <div className="flex-1 space-y-6">
@@ -71,6 +74,8 @@ export function TripDetailsPage() {
 
       {isCreateActivyModalOpen && (
         <CreateActivityModal
+          tripId={tripId}
+          timeInfo={trip}
           closeCreateActivyModalOpen={closeCreateActivyModalOpen}
         />
       )}
