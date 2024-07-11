@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { ImportantLinks } from './components/important-links';
 import { GuestsConfirmList } from './components/guests-confirm-list';
@@ -8,6 +9,7 @@ import { HeaderDestinationAndDate } from './components/header-destination-and-da
 
 import { CreateActivityModal } from './modals/create-activity-modal';
 import { Button } from '../../components/Button';
+import { api } from '../../lib/axios';
 
 export function TripDetailsPage() {
   const [isCreateActivyModalOpen, setIsCreateActivyModalOpen] = useState(false);
@@ -19,6 +21,26 @@ export function TripDetailsPage() {
   function closeCreateActivyModalOpen() {
     setIsCreateActivyModalOpen(false);
   }
+
+  const { tripId } = useParams();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    api.get(`/trips/${tripId}`)
+      .then(response => {
+        console.log(response.data);
+        // Lógica adicional com a resposta bem-sucedida, se necessário
+      })
+      .catch(error => {
+        console.log(error);
+        if (error.response && error.response.data && (
+          error.response.data?.message === "Trip not found" || error.response.data?.message === "Invalid input"
+        )) {
+          navigate('/error-trip-not-found');
+        }
+      });
+  }, [tripId]);
 
   return (
     <div className="max-w-6xl w-full px-6 py-10 mx-auto space-y-8">
