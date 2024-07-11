@@ -33,7 +33,7 @@ export function CreateTripPage() {
     DateRange | undefined
   >();
 
-  const [query, setQuery] = useState('');
+  const [destination, setDestination] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
   const apiKey = import.meta.env.VITE_OPENCAGE_API_KEY;
@@ -41,10 +41,10 @@ export function CreateTripPage() {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
-    if (query.length > 2) {
+    if (destination.length > 2) {
       timeoutId = setTimeout(() => {
         fetch(
-          `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&language=pt&pretty=1`,
+          `https://api.opencagedata.com/geocode/v1/json?q=${destination}&key=${apiKey}&language=pt&pretty=1`,
         )
           .then((response) => response.json())
           .then((data) => {
@@ -58,7 +58,7 @@ export function CreateTripPage() {
     return () => {
       clearTimeout(timeoutId); // Limpando o timeout para evitar execução indesejada
     };
-  }, [query, apiKey]);
+  }, [destination, apiKey]);
 
   function openGuestsInput() {
     setIsGuestsInputOpen(true);
@@ -159,7 +159,7 @@ export function CreateTripPage() {
     const name = data.get('name')?.toString();
     const email = data.get('email')?.toString();
 
-    console.log(query);
+    console.log(destination);
     console.log(eventStartAndEndDates);
     console.log(emailsToInvite);
     console.log(name);
@@ -188,7 +188,7 @@ export function CreateTripPage() {
   }
 
   function handleSelectSuggestion(suggestion: Suggestion) {
-    setQuery(suggestion.formatted);
+    setDestination(suggestion.formatted);
     setSuggestions([]);
   }
 
@@ -209,8 +209,8 @@ export function CreateTripPage() {
             suggestions={suggestions}
             handleSelectSuggestion={handleSelectSuggestion}
             openGuestsInput={openGuestsInput}
-            setQuery={setQuery}
-            query={query}
+            setDestination={setDestination}
+            destination={destination}
             setEventStartAndEndDates={setEventStartAndEndDates}
             eventStartAndEndDates={eventStartAndEndDates}
           />
@@ -254,7 +254,7 @@ export function CreateTripPage() {
           closeConfirmTripModalOpen={closeConfirmTripModalOpen}
           createTrip={createTrip}
           validationMessage={validationMessage}
-          query={query}
+          destination={destination}
           eventStartAndEndDates={eventStartAndEndDates}
         />
       )}

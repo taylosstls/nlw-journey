@@ -14,10 +14,10 @@ interface DestinationAndDateStepProps {
   closeGuestsInput: () => void;
   handleSelectSuggestion: (string: Suggestion) => void;
   openGuestsInput: () => void;
-  setQuery: Dispatch<SetStateAction<string>>;
+  setDestination: Dispatch<SetStateAction<string>>;
   isGuestsInputOpen: boolean;
   suggestions: Suggestion[];
-  query: string;
+  destination: string;
   setEventStartAndEndDates: (dates: DateRange | undefined) => void;
   eventStartAndEndDates: DateRange | undefined;
 }
@@ -30,10 +30,10 @@ export function DestinationAndDateStep({
   closeGuestsInput,
   handleSelectSuggestion,
   openGuestsInput,
-  setQuery,
+  setDestination,
   isGuestsInputOpen,
   suggestions,
-  query,
+  destination,
   setEventStartAndEndDates,
   eventStartAndEndDates,
 }: DestinationAndDateStepProps) {
@@ -49,10 +49,10 @@ export function DestinationAndDateStep({
   }
 
   function handleOpenGuestsInput() {
-    if (!query && !eventStartAndEndDates?.from) {
+    if (!destination && !eventStartAndEndDates?.from) {
       setValidationMessage('Informe o destino e selecione uma data.');
       return;
-    } else if (!query) {
+    } else if (!destination) {
       setValidationMessage('Informe o destino de viagem.');
       return;
     } else if (!eventStartAndEndDates?.from) {
@@ -76,7 +76,7 @@ export function DestinationAndDateStep({
             type="text"
             placeholder="Para onde você vai?"
             className="bg-transparent text-sm placeholder-zinc-400 outline-none flex-1 truncate"
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => setDestination(e.target.value)}
           />
           {suggestions.length > 0 && (
             <ul className="absolute top-full mt-2 left-0 w-full bg-zinc-900 border border-zinc-200 rounded-md z-10">

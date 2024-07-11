@@ -11,7 +11,7 @@ interface ConfirmTripModal {
   closeConfirmTripModalOpen: () => void;
   createTrip: (event: FormEvent<HTMLFormElement>) => void;
   validationMessage: string | null;
-  query: string;
+  destination: string;
   eventStartAndEndDates: DateRange | undefined;
 }
 
@@ -19,7 +19,7 @@ export function ConfirmTripModal({
   closeConfirmTripModalOpen,
   createTrip,
   validationMessage,
-  query,
+  destination,
   eventStartAndEndDates,
 }: ConfirmTripModal) {
   const displayedDate = formatDisplayedDate(eventStartAndEndDates);
@@ -43,7 +43,7 @@ export function ConfirmTripModal({
           <p className="text-sm text-zinc-400">
             Para concluir a criação da viagem para
             <span className="font-semibold text-zinc-100">
-              {' ' + query + ' '}
+              {' ' + destination + ' '}
             </span>
             nas datas de
             <span className="font-semibold text-zinc-100">
