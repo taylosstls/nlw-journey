@@ -9,6 +9,7 @@ import { ConfirmTripModal } from './modals/confirm-trip-modal';
 
 import { isValidEmail } from '../../utils/validate-email';
 import { DateRange } from 'react-day-picker';
+import { api } from '../../lib/axios';
 
 interface Suggestion {
   formatted: string;
@@ -27,12 +28,11 @@ export function CreateTripPage() {
   const [validationMessage, setValidationMessage] = useState<string | null>(
     null,
   );
-
+  const [isLoading, setIsLoading] = useState(false);
   const [emailsToInvite, setEmailsToInvite] = useState<EmailsInvite[]>([]);
   const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
     DateRange | undefined
   >();
-
   const [destination, setDestination] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
@@ -153,38 +153,55 @@ export function CreateTripPage() {
     setEmailsToInvite(newEmailList);
   }
 
-  function createTrip(event: FormEvent<HTMLFormElement>) {
+  async function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = data.get('name')?.toString();
-    const email = data.get('email')?.toString();
+    setIsLoading(true);
 
-    console.log(destination);
-    console.log(eventStartAndEndDates);
-    console.log(emailsToInvite);
-    console.log(name);
-    console.log(email);
+    try {
+      const data = new FormData(event.currentTarget);
+      const OwnerName = data.get('name')?.toString();
+      const OwnerEmail = data.get('email')?.toString();
 
-    if (!name?.trim() && !email?.trim()) {
-      setValidationMessage(
-        'Por favor, preencha seu nome completo e e-mail pessoal.',
-      );
-      return;
-    } else if (!name?.trim()) {
-      setValidationMessage('Por favor, preencha seu nome completo.');
-      return;
-    } else if (!email?.trim()) {
-      setValidationMessage('Por favor, preencha seu e-mail pessoal.');
-      return;
-    } else if (!isValidEmail(email)) {
-      setValidationMessage('Por favor, insira um e-mail válido.');
-      return;
+      if (!OwnerName?.trim() && !OwnerEmail?.trim()) {
+        setValidationMessage(
+          'Por favor, preencha seu nome completo e e-mail pessoal.',
+        );
+        setIsLoading(false);
+        return;
+      } else if (!OwnerName?.trim()) {
+        setValidationMessage('Por favor, preencha seu nome completo.');
+        setIsLoading(false);
+        return;
+      } else if (!OwnerEmail?.trim()) {
+        setValidationMessage('Por favor, preencha seu e-mail pessoal.');
+        setIsLoading(false);
+        return;
+      } else if (!isValidEmail(OwnerEmail)) {
+        setValidationMessage('Por favor, insira um e-mail válido.');
+        setIsLoading(false);
+        return;
+      }
+
+      setValidationMessage(null);
+
+      const response = await api.post('/trips', {
+        "destination": destination,
+        "starts_at": eventStartAndEndDates?.from,
+        "ends_at": eventStartAndEndDates?.to,
+        "emails_to_invite": emailsToInvite,
+        "owner_name": OwnerName,
+        "owner_email": OwnerEmail
+      })
+
+      const { tripId } = response.data
+
+      navigate(`trips/${tripId}`);
+    } catch (error) {
+      console.log(error);
+      setValidationMessage('Erro ao criar viagem. Por favor, tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
-
-    // Resetar a mensagem de validação antes de prosseguir
-    setValidationMessage(null);
-
-    navigate('trips/123');
   }
 
   function handleSelectSuggestion(suggestion: Suggestion) {
@@ -256,6 +273,7 @@ export function CreateTripPage() {
           validationMessage={validationMessage}
           destination={destination}
           eventStartAndEndDates={eventStartAndEndDates}
+          isLoading={isLoading}
         />
       )}
     </div>

@@ -1,18 +1,19 @@
 import { FormEvent } from 'react';
 import { DateRange } from 'react-day-picker';
-import { Mail, User, X } from 'lucide-react';
+import { Mail, User, X, Loader } from 'lucide-react';
 
 import { Button } from '../../../components/Button';
 
 import { formatDisplayedDate } from '../../../utils/format-date';
 import { ErrorMessage } from '../../../components/ErrorMessage';
 
-interface ConfirmTripModal {
+interface ConfirmTripModalProps {
   closeConfirmTripModalOpen: () => void;
   createTrip: (event: FormEvent<HTMLFormElement>) => void;
   validationMessage: string | null;
   destination: string;
   eventStartAndEndDates: DateRange | undefined;
+  isLoading: boolean;
 }
 
 export function ConfirmTripModal({
@@ -21,8 +22,10 @@ export function ConfirmTripModal({
   validationMessage,
   destination,
   eventStartAndEndDates,
-}: ConfirmTripModal) {
+  isLoading,
+}: ConfirmTripModalProps) {
   const displayedDate = formatDisplayedDate(eventStartAndEndDates);
+
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5">
       <div className="w-full max-w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
@@ -61,6 +64,7 @@ export function ConfirmTripModal({
               name="name"
               placeholder="Seu nome completo"
               className="bg-transparent text-sm placeholder-zinc-400 outline-none flex-1"
+              disabled={isLoading}
             />
           </div>
 
@@ -71,11 +75,16 @@ export function ConfirmTripModal({
               name="email"
               placeholder="Seu e-mail pessoal"
               className="bg-transparent text-sm placeholder-zinc-400 outline-none flex-1"
+              disabled={isLoading}
             />
           </div>
 
-          <Button type="submit" size="full">
-            Confirmar criação da viagem
+          <Button type="submit" size="full" disabled={isLoading}>
+            {isLoading ? (
+              <Loader className="animate-spin" />
+            ) : (
+              'Confirmar criação da viagem'
+            )}
           </Button>
         </form>
 
