@@ -68,8 +68,8 @@ export function InviteGuestsModal({
             <input
               type="text"
               name="email"
-              placeholder="Digite o email do convidado"
-              className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+              placeholder="Digite o e-mail do convidado"
+              className="bg-transparent text-sm placeholder-zinc-400 outline-none flex-1"
             />
           </div>
 

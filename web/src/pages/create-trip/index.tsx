@@ -7,6 +7,9 @@ import { InviteGuestsStep } from './components/invite-guests-step';
 import { InviteGuestsModal } from './modals/invite-guests-modal';
 import { ConfirmTripModal } from './modals/confirm-trip-modal';
 
+import { isValidEmail } from '../../utils/validate-email';
+import { DateRange } from 'react-day-picker';
+
 interface Suggestion {
   formatted: string;
 }
@@ -26,6 +29,10 @@ export function CreateTripPage() {
   );
 
   const [emailsToInvite, setEmailsToInvite] = useState<EmailsInvite[]>([]);
+  const [eventStartAndEndDates, setEventStartAndEndDates] = useState<
+    DateRange | undefined
+  >();
+
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
@@ -59,6 +66,7 @@ export function CreateTripPage() {
 
   function closeGuestsInput() {
     setIsGuestsInputOpen(false);
+    setValidationMessage('');
   }
 
   function openGuestsModal() {
@@ -67,6 +75,7 @@ export function CreateTripPage() {
 
   function closeGuestsModal() {
     setIsGuestsModalOpen(false);
+    setValidationMessage('');
   }
 
   function openConfirmTripModalOpen() {
@@ -75,6 +84,7 @@ export function CreateTripPage() {
 
   function closeConfirmTripModalOpen() {
     setIsConfirmTripModalOpen(false);
+    setValidationMessage('');
   }
 
   function addNewEmailToInvite(event: FormEvent<HTMLFormElement>) {
@@ -94,9 +104,6 @@ export function CreateTripPage() {
       .split(/[,;]+/)
       .map((email) => email.trim());
 
-    // Expressão regular para validar e-mails
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     // Validar e adicionar e-mails únicos
     const newEmailsToAdd: EmailsInvite[] = [];
     const invalidEmails: string[] = [];
@@ -104,7 +111,7 @@ export function CreateTripPage() {
 
     emailsArray.forEach((email) => {
       if (email) {
-        if (!emailRegex.test(email)) {
+        if (!isValidEmail(email)) {
           invalidEmails.push(email);
         } else if (emailsToInvite.some((e) => e.email === email)) {
           duplicateEmails.push(email);
@@ -116,13 +123,14 @@ export function CreateTripPage() {
 
     if (newEmailsToAdd.length > 0) {
       setEmailsToInvite([...emailsToInvite, ...newEmailsToAdd]);
+      setValidationMessage('');
     }
 
     if (invalidEmails.length > 0) {
       setValidationMessage(
         invalidEmails.length === 1
-          ? `E-mail ${duplicateEmails.join(', ')} inválido.`
-          : `Os seguintes e-mails são inválidos: ${duplicateEmails.join(', ')}}`,
+          ? `E-mail ${invalidEmails.join(', ')} inválido.`
+          : `Os seguintes e-mails são inválidos: ${invalidEmails.join(', ')}`,
       );
     } else if (duplicateEmails.length > 0) {
       setValidationMessage(
@@ -131,7 +139,7 @@ export function CreateTripPage() {
           : `Os seguintes e-mails já estão na lista: ${duplicateEmails.join(', ')}`,
       );
     } else {
-      setValidationMessage(null);
+      setValidationMessage('');
     }
 
     event.currentTarget.reset();
@@ -147,6 +155,34 @@ export function CreateTripPage() {
 
   function createTrip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const name = data.get('name')?.toString();
+    const email = data.get('email')?.toString();
+
+    console.log(query);
+    console.log(eventStartAndEndDates);
+    console.log(emailsToInvite);
+    console.log(name);
+    console.log(email);
+
+    if (!name?.trim() && !email?.trim()) {
+      setValidationMessage(
+        'Por favor, preencha seu nome completo e e-mail pessoal.',
+      );
+      return;
+    } else if (!name?.trim()) {
+      setValidationMessage('Por favor, preencha seu nome completo.');
+      return;
+    } else if (!email?.trim()) {
+      setValidationMessage('Por favor, preencha seu e-mail pessoal.');
+      return;
+    } else if (!isValidEmail(email)) {
+      setValidationMessage('Por favor, insira um e-mail válido.');
+      return;
+    }
+
+    // Resetar a mensagem de validação antes de prosseguir
+    setValidationMessage(null);
 
     navigate('trips/123');
   }
@@ -175,6 +211,8 @@ export function CreateTripPage() {
             openGuestsInput={openGuestsInput}
             setQuery={setQuery}
             query={query}
+            setEventStartAndEndDates={setEventStartAndEndDates}
+            eventStartAndEndDates={eventStartAndEndDates}
           />
 
           {isGuestsInputOpen && (
@@ -187,7 +225,7 @@ export function CreateTripPage() {
         </div>
 
         <p className="text-sm text-zinc-500">
-          Ao planejar sua viagem pela plann.er você automaticamente concorda{' '}
+          Ao planejar sua viagem pela plann.er você automaticamente concorda
           <br />
           com nossos{' '}
           <a className="text-zinc-300 underline" href="#">
@@ -215,6 +253,9 @@ export function CreateTripPage() {
         <ConfirmTripModal
           closeConfirmTripModalOpen={closeConfirmTripModalOpen}
           createTrip={createTrip}
+          validationMessage={validationMessage}
+          query={query}
+          eventStartAndEndDates={eventStartAndEndDates}
         />
       )}
     </div>
