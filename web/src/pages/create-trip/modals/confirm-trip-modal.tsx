@@ -5,6 +5,7 @@ import { Mail, User, X } from 'lucide-react';
 import { Button } from '../../../components/Button';
 
 import { formatDisplayedDate } from '../../../utils/format-date';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 
 interface ConfirmTripModal {
   closeConfirmTripModalOpen: () => void;
@@ -78,9 +79,7 @@ export function ConfirmTripModal({
           </Button>
         </form>
 
-        {validationMessage && (
-          <div className="text-red-500 text-sm">{validationMessage}</div>
-        )}
+        <ErrorMessage validationMessage={validationMessage} />
       </div>
     </div>
   );

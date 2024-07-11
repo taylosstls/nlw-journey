@@ -8,6 +8,7 @@ import 'react-day-picker/dist/style.css';
 import { Button } from '../../../components/Button';
 
 import { formatDisplayedDate } from '../../../utils/format-date';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 
 interface DestinationAndDateStepProps {
   closeGuestsInput: () => void;
@@ -146,11 +147,7 @@ export function DestinationAndDateStep({
           </Button>
         )}
       </div>
-      {validationMessage && (
-        <div className="text-red-500 text-sm text-left">
-          {validationMessage}
-        </div>
-      )}
+      <ErrorMessage validationMessage={validationMessage} />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { AtSign, Plus, X } from 'lucide-react';
 import { FormEvent } from 'react';
 import { Button } from '../../../components/Button';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 
 interface InviteGuestsModalProps {
   closeGuestsModal: () => void;
@@ -79,9 +80,7 @@ export function InviteGuestsModal({
           </Button>
         </form>
 
-        {validationMessage && (
-          <div className="text-red-500 text-sm">{validationMessage}</div>
-        )}
+        <ErrorMessage validationMessage={validationMessage} />
       </div>
     </div>
   );

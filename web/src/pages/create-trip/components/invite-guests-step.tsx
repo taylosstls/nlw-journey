@@ -1,6 +1,7 @@
 import { ArrowRight, UserRoundPlus } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../../../components/Button';
+import { ErrorMessage } from '../../../components/ErrorMessage';
 
 interface InviteGuestsStep {
   openGuestsModal: () => void;
@@ -54,11 +55,7 @@ export function InviteGuestsStep({
           <ArrowRight className="size-5" />
         </Button>
       </div>
-      {validationMessage && (
-        <div className="text-red-500 text-sm text-left">
-          {validationMessage}
-        </div>
-      )}
+      <ErrorMessage validationMessage={validationMessage} />
     </>
   );
 }
