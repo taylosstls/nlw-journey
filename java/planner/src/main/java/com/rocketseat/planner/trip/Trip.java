@@ -21,7 +21,7 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "destination", nullable = false)
+    @Column(nullable = false)
     private String destination;
 
     @Column(name = "starts_at", nullable = false)
